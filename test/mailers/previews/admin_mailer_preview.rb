@@ -4,4 +4,3 @@ class AdminMailerPreview < ActionMailer::Preview
     AdminMailer.activity_email User.first, ActionDispatch::TestRequest.create({}), Time.zone.now
   end
 end
-

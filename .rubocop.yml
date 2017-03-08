@@ -15,6 +15,14 @@ Metrics/LineLength:
   Enabled: true
   Max: 120
 
+Metrics/BlockLength:
+  Enabled: false
+  # Don't compartmentalize code into functions/methods/modules unless they need re-use.
+
+Style/StringLiterals:
+  Enabled: false
+  # Using double quotes for strings w/o interpolation not a big deal to me.
+
 Style/ClassAndModuleChildren:
   # Skips checking the style of children definitions at classes and modules.
   #
