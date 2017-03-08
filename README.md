@@ -16,7 +16,8 @@ Simple Rails user management & authentication web app to proxy a private single-
 - VNC locally into the Selenium session to interact and debug.
 - Authenticated users are served single-page app with a proxied index page, and expiring pre-signed URLs for sensitive S3 hosted content are parsed/injected. Demo content is instance of [`jfroom/portfolio-web`](//github.com/jfroom/portfolio-web).
 - Let's Encrypt SSL certificates auto bound to the custom Heroku domain with [`letsencrypt-rails-heroku`](https://github.com/pixielabs/letsencrypt-rails-heroku).
-- Project initially seeded with [`nickjj/orats`](//github.com/nickjj/orats) template which was very helpful figuring out the `docker-compose` setup.
+- Notify admin by email when user has logged in
+- Project initially seeded with [`nickjj/orats`](//github.com/nickjj/orats) Rails template which was very helpful figuring out the `docker-compose` setup.
 
 ## Demo
 
@@ -117,9 +118,9 @@ Certificate is good for 90 days. To renew, run or schedule a variation of `herok
 - __Devise.__ In future projects I will use [Devise](https://github.com/plataformatec/devise) for authentication. Just wanted to write my own first to better understand the auth & user management process. 
 
 # Backlog Stories
-- Integrate Google Analytics
-- Configure prod instance to send email notifications to admin when user logs in or is locked out
-- Enhance logging on Heroku with [Papertrail}(https://elements.heroku.com/addons/papertrail)?
+- Use sidekiq/redis to .deliver_later the email
+- Exception notifications with: gem exception_notification
+ - Better logging: lograge, log4r, or other
 
 # License
 Copyright © JFMK, LLC Released under the [MIT License](https://github.com/jfroom/jfmk-auth/blob/master/LICENSE).
