@@ -156,6 +156,8 @@ GEM
       builder
       minitest (>= 5.0)
       ruby-progressbar
+    minitest-retry (0.1.8)
+      minitest (>= 5.0)
     multi_json (1.12.1)
     multipart-post (2.0.0)
     newrelic_rpm (3.18.1.330)
@@ -280,6 +282,7 @@ DEPENDENCIES
   minitest-around (~> 0.4.0)
   minitest-rails-capybara (~> 3.0)
   minitest-reporters (~> 1.1)
+  minitest-retry
   newrelic_rpm
   pg (~> 0.18)
   platform-api!

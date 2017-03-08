@@ -110,6 +110,9 @@ group :test do
 
   # Edit session in test
   gem 'rack_session_access'
+
+  # Sometimes webdriver hangs hangs when loading a session - this helps with a retry instead of a test suite fail.
+  gem 'minitest-retry'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

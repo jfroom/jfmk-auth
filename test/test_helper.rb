@@ -7,9 +7,13 @@ require 'rails/test_help'
 require 'minitest/reporters'
 require 'minitest/rails/capybara'
 require 'rack_session_access/capybara'
+require 'minitest/retry'
 
 # Ensure all migrations applied to test db
 ActiveRecord::Migration.check_pending!
+
+# Sometimes webdriver hangs hangs when loading a session - this helps with a retry instead of a test suite fail.
+Minitest::Retry.use!
 
 class ActiveSupport::TestCase
   # Don't alter fixture loaded data outside of Base page test scope. Only works for non-js driver tests
