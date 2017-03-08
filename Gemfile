@@ -59,7 +59,7 @@ gem 'bcrypt', '~> 3.1', '>= 3.1.11'
 gem 'haml', '~> 4.0.5'
 
 # Load .env files into ENV. Any host defined env vars will override .env file vars.
-gem 'dotenv-rails', '~> 2.2.0'
+gem 'dotenv', '~> 2.2.0'
 
 # Heroku CLI with Let's Encrypt API calls.
 # Until the new API calls are generally available, you must manually specify my fork

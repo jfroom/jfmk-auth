@@ -1,3 +1,6 @@
+# Load up .env to ENV[]
+require 'dotenv/load'
+
 # Bind on a specific TCP address. We won't bother using unix sockets because
 # nginx will be running in a different Docker container.
 bind "tcp://#{ENV.fetch('BIND_ON') {'0.0.0.0'}}:#{ENV.fetch('PORT') { '3000'}}"
