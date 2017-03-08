@@ -54,8 +54,6 @@ class SessionsIntegrationTest < ActionDispatch::IntegrationTest
     assert_response :success
 
     email = ActionMailer::Base.deliveries.last
-    assert_equal "[#{request.host}] User Activity: Login for #{user.first_name} #{user.last_name}, @#{user.username}",
-                 email.subject
     assert_equal [ENV['ACTION_MAILER_DEFAULT_TO']], email.to
     assert_equal [ENV['ACTION_MAILER_DEFAULT_FROM']], email.from
     content = "Login for #{user.first_name} #{user.last_name}, @#{user.username}"
