@@ -7,4 +7,7 @@ test:
   url: <%= ENV['DATABASE_URL'].gsub('?', '_test?') %>
 
 production:
+  url: <%= ENV['DATABASE_URL'].gsub('?', '_staging?') %>
+
+production:
   url: <%= ENV['DATABASE_URL'].gsub('?', '_production?') %>
