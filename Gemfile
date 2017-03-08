@@ -72,6 +72,9 @@ gem 'letsencrypt-rails-heroku'
 # New Relic performance monitoring
 gem 'newrelic_rpm'
 
+# Email exceptions to admin
+gem 'exception_notification'
+
 group :development, :test do
   # Call 'byebug' anywhere in your code to drop into a debugger console
   gem 'byebug', platform: :mri
