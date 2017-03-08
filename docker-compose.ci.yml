@@ -17,4 +17,4 @@ services:
       - 3001
 
   selenium:
-      expose: [4444, 5900]
+    expose: [4444, 5900]
