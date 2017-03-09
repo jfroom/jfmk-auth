@@ -41,8 +41,8 @@ script:
   - docker-compose exec test rails test
 
 before_deploy:
+  - docker-compose exec test rails tmp:clear
   - docker-compose down
-  - rails tmp:clear
 
 deploy:
   provider: heroku
@@ -57,6 +57,6 @@ deploy:
     - restart
 
 after_script:
+  - docker-compose exec test rails tmp:clear
   - docker-compose down
-  - rails tmp:clear
   - docker-compose logs > ./log/docker-ci.log
