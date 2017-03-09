@@ -58,7 +58,7 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
-  opts = { email_prefix: "[#{ENV['APP_NAME'].upcase}::#{Rails.env}] ",
+  opts = { email_prefix: "[#{ENV.fetch('APP_NAME'){ 'APP_NAME' }.upcase}::#{Rails.env}] ",
            sender_address: ENV['ACTION_MAILER_DEFAULT_FROM'],
            exception_recipients: [ENV['ACTION_MAILER_DEFAULT_TO']] }
   Rails.application.config.middleware.use ExceptionNotification::Rack, email: opts
