@@ -1,5 +1,7 @@
 language: ruby
 
+cache: bundler
+
 rvm:
   - 2.3
 
@@ -43,6 +45,7 @@ script:
 before_cache:
   - docker-compose logs > ./log/docker-ci.log
   - docker-compose exec test rails tmp:clear
+  - docker-compose exec test bundle clean
   - docker-compose down
 
 deploy:
