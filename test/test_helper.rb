@@ -13,7 +13,11 @@ require 'minitest/retry'
 ActiveRecord::Migration.check_pending!
 
 # Sometimes webdriver hangs hangs when loading a session - this helps with a retry instead of a test suite fail.
-Minitest::Retry.use!
+Minitest::Retry.use!(
+    retry_count:  2,
+    # List of exceptions that will trigger a retry (when empty, all exceptions will).
+    exceptions_to_retry: [Net::ReadTimeout]
+)
 
 class ActiveSupport::TestCase
   # Don't alter fixture loaded data outside of Base page test scope. Only works for non-js driver tests
