@@ -52,9 +52,14 @@ Rails.application.configure do
   # Send deprecation notices to registered listeners.
   config.active_support.deprecation = :notify
 
-  # Use default logging formatter so that PID and timestamp are not suppressed.
-  config.log_formatter = ::Logger::Formatter.new
+  # Add extra logging information
+  config.log_tags = [:host, :uuid]
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  opts = { email_prefix: "[#{ENV['APP_NAME'].upcase}::#{Rails.env}] ",
+           sender_address: ENV['ACTION_MAILER_DEFAULT_FROM'],
+           exception_recipients: [ENV['ACTION_MAILER_DEFAULT_TO']] }
+  Rails.application.config.middleware.use ExceptionNotification::Rack, email: opts
 end

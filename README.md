@@ -119,8 +119,6 @@ Certificate is good for 90 days. To renew, run or schedule a variation of `herok
 
 # Backlog Stories
 - Use sidekiq/redis to .deliver_later the email
-- Exception notifications with: gem exception_notification
- - Better logging: lograge, log4r, or other
 
 # License
 Copyright © JFMK, LLC Released under the [MIT License](https://github.com/jfroom/jfmk-auth/blob/master/LICENSE).

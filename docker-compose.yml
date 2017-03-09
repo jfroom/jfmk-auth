@@ -15,6 +15,7 @@ services:
     depends_on:
       - postgres
     build: .
+    env_file: .env
     volumes:
       - '.:/jfmk_auth'
 
@@ -23,6 +24,7 @@ services:
     tty: true
   test:
       build: .
+      env_file: .env
       environment:
         - RAILS_ENV=test
         - TEST_APP_HOST=test

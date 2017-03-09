@@ -40,9 +40,12 @@ before_script:
 script:
   - docker-compose exec test rails test
 
-after_script:
-  - docker-compose logs > ./log/docker-ci.log
+before_cache:
   - docker-compose down
+
+after_script:
+  - docker-compose down
+  - docker-compose logs > ./log/docker-ci.log
 
 deploy:
   provider: heroku
@@ -53,4 +56,5 @@ deploy:
   before_deploy:
     - 'rails db:migrate'
     - 'rails db:schema:cache:clear'
+    - 'rails assets:precompile'
     - restart

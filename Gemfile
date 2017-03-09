@@ -59,7 +59,7 @@ gem 'bcrypt', '~> 3.1', '>= 3.1.11'
 gem 'haml', '~> 4.0.5'
 
 # Load .env files into ENV. Any host defined env vars will override .env file vars.
-gem 'dotenv-rails', '~> 2.2.0'
+gem 'dotenv', '~> 2.2.0'
 
 # Heroku CLI with Let's Encrypt API calls.
 # Until the new API calls are generally available, you must manually specify my fork
@@ -71,6 +71,12 @@ gem 'letsencrypt-rails-heroku'
 
 # New Relic performance monitoring
 gem 'newrelic_rpm'
+
+# Email exceptions to admin
+gem 'exception_notification'
+
+# Consolidate logs
+gem 'lograge'
 
 group :development, :test do
   # Call 'byebug' anywhere in your code to drop into a debugger console
@@ -110,6 +116,9 @@ group :test do
 
   # Edit session in test
   gem 'rack_session_access'
+
+  # Sometimes webdriver hangs hangs when loading a session - this helps with a retry instead of a test suite fail.
+  gem 'minitest-retry'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

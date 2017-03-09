@@ -17,8 +17,9 @@ class AdminMailerTest < ActionMailer::TestCase
     # Test the body of the sent email contains what we expect it to
     assert_equal [ENV['ACTION_MAILER_DEFAULT_FROM']], email.from
     assert_equal [ENV['ACTION_MAILER_DEFAULT_TO']], email.to
-    assert_equal "[#{request.host}] User Activity: Login for #{user.first_name} #{user.last_name}, @#{user.username}",
-                 email.subject
+    subject = "[#{ENV['APP_NAME'].upcase}::#{Rails.env}] "\
+              "User Activity: Login for #{user.first_name} #{user.last_name}, @#{user.username}"
+    assert_equal subject, email.subject
     assert_equal read_fixture('activity_email.html').join, email.html_part.body.to_s
     assert_equal read_fixture('activity_email.text').join, email.text_part.body.to_s
   end

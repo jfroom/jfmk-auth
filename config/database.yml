@@ -6,5 +6,4 @@ development:
 test:
   url: <%= ENV['DATABASE_URL'].gsub('?', '_test?') %>
 
-production:
-  url: <%= ENV['DATABASE_URL'].gsub('?', '_production?') %>
+# In production, Herok passes in own DATABASE_URL string and it has no '?'
