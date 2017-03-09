@@ -40,7 +40,8 @@ before_script:
 script:
   - docker-compose exec test rails test
 
-before_deploy:
+before_cache:
+  - docker-compose logs > ./log/docker-ci.log
   - docker-compose exec test rails tmp:clear
   - docker-compose down
 
@@ -55,8 +56,3 @@ deploy:
     - 'rails db:schema:cache:clear'
     - 'rails assets:precompile'
     - restart
-
-after_script:
-  - docker-compose exec test rails tmp:clear
-  - docker-compose down
-  - docker-compose logs > ./log/docker-ci.log
