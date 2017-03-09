@@ -20,8 +20,8 @@ module JfmkAuth
     # or a third party host such as Loggly, etc..
     logger = ActiveSupport::Logger.new(STDOUT)
 
-    # Use Ruby logger for more verbose messages
-    logger.formatter = ::Logger::Formatter.new
+    # Use Ruby logger for more verbose messages. But not for test - too noisy.
+    logger.formatter = ::Logger::Formatter.new unless Rails.env.test?
     # Allow tagged logging. Production env adds tags.
     logger = ActiveSupport::TaggedLogging.new(logger)
     config.logger = logger
