@@ -78,6 +78,9 @@ gem 'exception_notification'
 # Consolidate logs
 gem 'lograge'
 
+# Background process jobs async w/o extra services
+gem 'sucker_punch', '~> 2.0'
+
 group :development, :test do
   # Call 'byebug' anywhere in your code to drop into a debugger console
   gem 'byebug', platform: :mri

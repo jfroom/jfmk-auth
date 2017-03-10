@@ -16,7 +16,8 @@ Simple Rails user management & authentication web app to proxy a private single-
 - VNC locally into the Selenium session to interact and debug.
 - Authenticated users are served single-page app with a proxied index page, and expiring pre-signed URLs for sensitive S3 hosted content are parsed/injected. Demo content is instance of [`jfroom/portfolio-web`](//github.com/jfroom/portfolio-web).
 - Let's Encrypt SSL certificates auto bound to the custom Heroku domain with [`letsencrypt-rails-heroku`](https://github.com/pixielabs/letsencrypt-rails-heroku).
-- Notify admin by email when user has logged in
+- Notify admin by email when user has logged in; sent with [SES](https://aws.amazon.com/ses/)
+- Mailer job runs async in background job with [Sucker Punch](https://github.com/brandonhilkert/sucker_punch) 
 - Project initially seeded with [`nickjj/orats`](//github.com/nickjj/orats) Rails template which was very helpful figuring out the `docker-compose` setup.
 
 ## Demo
@@ -116,9 +117,6 @@ Certificate is good for 90 days. To renew, run or schedule a variation of `herok
 - __S3 auth proxy.__ There are a few other project that handle [S3 proxy with authentication](https://www.google.com/search?q=s3+proxy+auth). But one drawback is the app server becomes a bottleneck — which becomes more obvious for large files like video. A mix of pre-signed S3 expiring private content URLs, and publicly served S3 non-sensitive files (e.g. JS, CSS, some content) alleviates this. Admittedly, the proxy/injection I've cooked up is a little brittle — which leads to my next point.
 - __Simple content views.__ `app/controllers/proxy_controller` which parses/proxies/pre-signs S3 content is tightly coupled to my personal needs. If you choose to clone/fork this project for the user management aspect, you'll probably want to yank that controller, related tests, and environment vars. You could just replace it with simple HTML/HAML views.
 - __Devise.__ In future projects I will use [Devise](https://github.com/plataformatec/devise) for authentication. Just wanted to write my own first to better understand the auth & user management process. 
-
-# Backlog Stories
-- Use sidekiq/redis to .deliver_later the email
 
 # License
 Copyright © JFMK, LLC Released under the [MIT License](https://github.com/jfroom/jfmk-auth/blob/master/LICENSE).

@@ -11,6 +11,19 @@ module JfmkAuth
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
 
+    # Set up logging to be the same in all environments but control the level
+    # through an environment variable.
+    config.log_level = ENV.fetch('LOG_LEVEL') {'debug'}
+
+    # Log to STDOUT because Docker expects all processes to log here. You could
+    # then redirect logs to a third party service on your own such as systemd,
+    # or a third party host such as Loggly, etc..
+    # Allow tagged logging. Production env adds tags.
+    config.logger = ActiveSupport::TaggedLogging.new ActiveSupport::Logger.new(STDOUT)
+
+    # Enable lograge to compact requests in logs
+    config.lograge.enabled = true
+
     # Action mailer settings.
     config.action_mailer.delivery_method = :smtp
     config.action_mailer.smtp_settings = {
@@ -34,6 +47,10 @@ module JfmkAuth
     # Set Redis as the back-end for the cache.
     # config.cache_store = :redis_store, ENV['REDIS_CACHE_URL']
     config.cache_store = :memory_store, { size: 64.megabytes }
+
+    # Set Sucker Punch as the back-end for Active Job.
+    config.active_job.queue_adapter = :sucker_punch
+    config.active_job.queue_name_prefix = "#{ENV['ACTIVE_JOB_QUEUE_PREFIX']}_#{Rails.env}"
 
     # Action Cable setting to de-couple it from the main Rails process.
     #config.action_cable.url = ENV['ACTION_CABLE_FRONTEND_URL']

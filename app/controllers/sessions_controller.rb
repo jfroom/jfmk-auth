@@ -11,7 +11,9 @@ class SessionsController < ApplicationController
       # Email notify admin of a user login
       unless user.admin? || ENV['IS_DEMO_MODE'] == '1'
         begin # Log any errors silently so user can still login
-          AdminMailer.activity_email(user, request, Time.zone.now).deliver_now # TODO .deliver_later w/ sidekiq
+          AdminMailer.activity_email(
+              user.username, Time.zone.now.to_s, request.host, request.url, request.remote_ip, request.user_agent
+          ).deliver_later
         rescue  Net::SMTPAuthenticationError, Net::SMTPServerBusy, Net::SMTPSyntaxError, Net::SMTPFatalError,
                 Net::SMTPUnknownError => e
           logger.error e.message
