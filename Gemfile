@@ -99,6 +99,9 @@ group :development do
   # Use Spring. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+
+  # Ruby linter
+  gem 'rubocop'
 end
 
 group :test do
