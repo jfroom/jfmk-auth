@@ -56,7 +56,7 @@ class SessionsIntegrationTest < ActionDispatch::IntegrationTest
     email = ActionMailer::Base.deliveries.last
     assert_equal [ENV['ACTION_MAILER_DEFAULT_TO']], email.to
     assert_equal [ENV['ACTION_MAILER_DEFAULT_FROM']], email.from
-    content = "Login for #{user.first_name} #{user.last_name}, @#{user.username}"
+    content = "Login: @#{user.username}"
     assert_match(content, email.html_part.body.to_s)
   end
 

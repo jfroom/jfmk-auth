@@ -1,7 +1,7 @@
 [test.host] User Activity
 ======================================
 
-Login for Client Smith, @client
+Login: @client
 
 - DateTime: 2017-03-07 15:26:40 -0800
 - URL: http://test.host/

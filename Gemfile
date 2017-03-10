@@ -78,6 +78,9 @@ gem 'exception_notification'
 # Consolidate logs
 gem 'lograge'
 
+# Background process jobs async w/o extra services
+gem 'sucker_punch', '~> 2.0'
+
 group :development, :test do
   # Call 'byebug' anywhere in your code to drop into a debugger console
   gem 'byebug', platform: :mri
@@ -96,6 +99,9 @@ group :development do
   # Use Spring. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+
+  # Ruby linter
+  gem 'rubocop'
 end
 
 group :test do

@@ -1,7 +1,5 @@
 language: ruby
 
-cache: bundler
-
 rvm:
   - 2.3
 
@@ -45,7 +43,6 @@ script:
 before_cache:
   - docker-compose logs > ./log/docker-ci.log
   - docker-compose exec test rails tmp:clear
-  - docker-compose exec test bundle clean
   - docker-compose down
 
 deploy:
@@ -59,3 +56,9 @@ deploy:
     - 'rails db:schema:cache:clear'
     - 'rails assets:precompile'
     - restart
+
+# For travis beta cache feature, might need to expose bundler vendor/cache
+# as a volume in docker-compose in order to leverage this feature
+#cache: true
+#before_cache:
+#  - docker-compose exec test bundle clean

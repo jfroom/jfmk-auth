@@ -8,6 +8,7 @@ require 'minitest/reporters'
 require 'minitest/rails/capybara'
 require 'rack_session_access/capybara'
 require 'minitest/retry'
+require 'sucker_punch/testing/inline'
 
 # Ensure all migrations applied to test db
 ActiveRecord::Migration.check_pending!
