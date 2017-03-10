@@ -10,26 +10,18 @@ class SessionsController < ApplicationController
 
       # Email notify admin of a user login
       unless user.admin? || ENV['IS_DEMO_MODE'] == '1'
-        begin # Log any errors silently so user can still login
-          AdminMailer.activity_email(
-              user.username, Time.zone.now.to_s, request.host, request.url, request.remote_ip, request.user_agent
-          ).deliver_later
-        rescue  Net::SMTPAuthenticationError, Net::SMTPServerBusy, Net::SMTPSyntaxError, Net::SMTPFatalError,
-                Net::SMTPUnknownError => e
-          logger.error e.message
-          NewRelic::Agent.notice_error e
-        end
+        notify_login(user.username)
       end
 
       # Admin goes to admin page, all other users go to root content page
       redirect_to user.admin? ? admin_root_path : root_path
     else
       flash.now[:alert] =
-          if User.is_login_locked?(params[:username])
-            "Username is locked. Please contact the administrator to reset."
-          else
-            "Invalid username or password."
-          end
+        if User.is_login_locked?(params[:username])
+          "Username is locked. Please contact the administrator to reset."
+        else
+          "Invalid username or password."
+        end
       @username = params[:username]
       render :index
     end
@@ -50,5 +42,15 @@ class SessionsController < ApplicationController
       return false
     end
     true
+  end
+
+  def notify_login(username)
+    AdminMailer.activity_email(username, Time.zone.now.to_s,
+                               request.host, request.url, request.remote_ip, request.user_agent).deliver_later
+  # Log any errors silently so user can still login
+  rescue Net::SMTPAuthenticationError, Net::SMTPServerBusy, Net::SMTPSyntaxError, Net::SMTPFatalError,
+         Net::SMTPUnknownError => e
+    logger.error e.message
+    NewRelic::Agent.notice_error e
   end
 end
