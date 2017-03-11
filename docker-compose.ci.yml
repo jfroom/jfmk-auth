@@ -1,20 +1,11 @@
-version: '3.1'
+version: '2.1'
 
 services:
   postgres:
-    expose:
-      - 5432 # Not exposing port externally because it conflicts a port used by Travis
+    expose: [5432] # Not exposing port externally because it conflicts a port used by Travis
 
   web:
-    expose:
-      - 3000
-
-  test:
-    environment:
-      - AWS_ACCESS_KEY
-      - AWS_SECRET_ACCESS_KEY
-    expose:
-      - 3001
+    expose: [3000, 3001]
 
   selenium:
     expose: [4444, 5900]

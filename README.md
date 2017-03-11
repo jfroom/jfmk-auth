@@ -49,9 +49,9 @@ Note:
 
 `docker-compose up` Build the docker images.
 
-`docker-compose exec web rails r bin/setup` Set up rails and the database.
+`docker-compose exec web bin/setup` Set up rails and the database.
 
-`docker-compose exec web rails db:seed` Seed the database with two users: `admin:Admin123` and `user:User123`. Use the admin login to change those immediately.
+`docker-compose exec web bin/rails db:seed` Seed the database with two users: `admin:Admin123` and `user:User123`. Use the admin login to change those immediately.
 
 ## Development 
 
@@ -62,10 +62,11 @@ Note:
 `docker-compose down; docker-compose up -d; docker attach jfmkauth_web_1`
 A common call chain to stop any existing/hung containers, stand up all services in detached mode, connect to view web service only (to view running log and interact with byebug).
 
-`docker-compose exec web rails r bin/update` Performs Rails db migration, checks for bundle changes. This will install any new gems in the container but not the image - see next command.  
+`docker-compose exec web bin/update` Performs Rails db migration, checks for bundle changes. This will install any new gems in the container but not the image - see next command.  
 
 `docker-compose build` If Gemfile or Gemfile.lock have changed, docker web image needs to be rebuilt. (TODO: make this [more dynamic](http://bradgessler.com/articles/docker-bundler/))
 
+These [docker shortcuts](https://www.digitalocean.com/community/tutorials/how-to-remove-docker-images-containers-and-volumes) to clean up old docker images/containers/volumes is very handy.
 
 ## Database
 
@@ -75,17 +76,17 @@ A common call chain to stop any existing/hung containers, stand up all services 
 
 ## Test
 
-`docker-compose exec test rails test` Run tests (also importantly sets Rails.env = 'test').
+`docker-compose exec web bin/rails test` Run tests (also importantly sets Rails.env = 'test').
 
-`vnc://localhost:5900  password:secret` To interactive with and debug Selenium sessions, use VNC to connect to the Selenium service. [VNC Viewer](https://www.realvnc.com/download/viewer/) works well, and on OS X Screen Sharing app is built-in.
+`vnc://localhost:5900 password:secret` To interactive with and debug Selenium sessions, use VNC to connect to the Selenium service. [VNC Viewer](https://www.realvnc.com/download/viewer/) works well, and on OS X Screen Sharing app is built-in.
 
-To visit the test app on local machine: `open http://localhost:3001/`. To visit in the VNC session visit: `http://test:3001`. 
+To visit the test app on local machine: `open http://localhost:3001/`. To visit in the VNC session visit: `http://web:3001`. 
 
 Commits to master are automatically tested by [Travis CI](https://travis-ci.org/jfroom/jfmk-auth). 
 
 Tests use: 
 - [`railsware/rack_session_access`](//github.com/railsware/rack_session_access) with Capybara to conveniently bypass session authenticating which speeds tests up.
-- [`thoughtbot/climate_control`](//github.com/thoughtbot/climate_control) to adjust ENV vars for models/integration, and a custom `/test/backdoor/` route for the capybara test enviornemnt only to adjust ENV.
+- [`thoughtbot/climate_control`](//github.com/thoughtbot/climate_control) to adjust ENV vars for models/integration, and a custom `/test/backdoor/` route for the capybara test environment only to adjust ENV.
 
 
 ## Deploy
