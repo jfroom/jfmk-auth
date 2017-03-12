@@ -35,14 +35,14 @@ install:
 before_script:
   - docker-compose -f docker-compose.yml -f docker-compose.ci.yml up -d
   - docker ps
-  - docker-compose exec web bin/rails r bin/setup
+  - docker-compose exec web rails db:setup
 
 script:
-  - docker-compose exec web bin/rails test
+  - docker-compose exec web rails test
 
 before_cache:
   - docker-compose logs > ./log/docker-ci.log
-  - docker-compose exec web bin/rails tmp:clear
+  - docker-compose exec web rails tmp:clear
   - docker-compose down
 
 deploy:

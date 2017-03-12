@@ -65,3 +65,6 @@ RUN chmod +x /docker-entrypoint.sh
 ENTRYPOINT ["/docker-entrypoint.sh"]
 # Add bundle entry point to handle bundle cache
 # https://unboxed.co/blog/docker-re-bundling/
+
+ENV PATH="/bundle/bin:${PATH}"
+# Bundle installs with binstubs to our custom /bundle/bin volume path. Let system use those stubs.

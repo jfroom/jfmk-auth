@@ -1,25 +1,18 @@
-version: '2.1'
+version: '3.1'
 
 services:
-  # https://unboxed.co/blog/docker-re-bundling/
-  bundle_cache:
-    command: "echo 'bundle_cache service is going to start and then immediately exit since it is just a volume.'"
-    image: alpine:latest
-    volumes:
-      - 'bundle_cache:/bundle'
-
   web:
     depends_on:
-      - bundle_cache
       - postgres
     build: .
     env_file: .env
     command: >
       bash -c "
-        # Run test server detached without tail log
-        RAILS_ENV=test bundle exec puma -b tcp://0.0.0.0:3001 -d &&
-        # Run web server and tail the log
-        bundle exec puma -C config/puma.rb
+        # Run test server detached
+        RAILS_ENV=test puma -b tcp://0.0.0.0:3001 -d &&
+
+        # Run web server
+        puma -C config/puma.rb
         "
     environment:
       - BUNDLE_PATH=/bundle
@@ -28,28 +21,28 @@ services:
       - TEST_APP_HOST=web
       - TEST_PORT=3001
     volumes:
-      - '.:/jfmk_auth'
-    volumes_from:
-      - bundle_cache
-    # Allow interaction on detached sessions like byebug
+      - .:/jfmk_auth
+      - bundle_cache:/bundle
+      # Cache bundle files into a volume. https://unboxed.co/blog/docker-re-bundling/
     stdin_open: true
     tty: true
+    # Allow interaction on detached sessions like byebug
 
   postgres:
-    image: 'postgres:9.6.1'
+    image: postgres:9.6.1
     environment:
-      POSTGRES_USER: 'jfmk_auth'
-      POSTGRES_PASSWORD: 'yourpassword'
+      POSTGRES_USER: jfmk_auth
+      POSTGRES_PASSWORD: yourpassword
     volumes:
-      - 'postgres:/var/lib/postgresql/data'
+      - postgres:/var/lib/postgresql/data
     logging:
-      driver: 'none'
+      driver: none
 
   selenium:
     #image: selenium/standalone-firefox-debug:2.48.2
     image: selenium/standalone-chrome-debug:3.0.1-germanium # :2.27 not working
     logging:
-      driver: 'none'
+      driver: none
 
 volumes:
   postgres:

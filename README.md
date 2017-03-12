@@ -10,7 +10,7 @@ Simple Rails user management & authentication web app to proxy a private single-
 ## Technologies
 
 - Rails 5, Postgres, Selenium, AWS S3, HAML, CoffeeScript, Bootstrap, SCSS
-- Docker Compose for development, test and Travis CI; and Heroku Pipelines for deployments.
+- Docker Compose for development & test; Travis for CI/CD; Heroku Pipelines for production
 - Simple [`has_secure_password`](http://api.rubyonrails.org/classes/ActiveModel/SecurePassword/ClassMethods.html) Rails API for authentication & cookie sessions. User is locked out after X failed attempts.
 - Tests with MiniTest for models & integration, and Capybara Selenium acceptance tests running in a docker service with Chrome standalone.
 - VNC locally into the Selenium session to interact and debug.
@@ -47,24 +47,31 @@ Note:
 
 ## First run
 
-`docker-compose up` Build the docker images.
+`docker-compose up` Build the docker images, install dependencies, and start the services. 
 
-`docker-compose exec web bin/setup` Set up rails and the database.
+Once the docker services are build and running, the web service will occupy the current terminal with the running puma server log. Open a new terminal instance to issue any additional commands, or run the prior command in detached mode `docker-compose up -d` to free the current terminal session (more on that below). 
 
-`docker-compose exec web bin/rails db:seed` Seed the database with two users: `admin:Admin123` and `user:User123`. Use the admin login to change those immediately.
+`docker-compose exec web bin/setup` Set up the database.
+
+`docker-compose exec web rails db:seed` Seed the database with two users: `admin:Admin123` and `user:User123`. Use the admin login to change those immediately.
+
+### Docker's Bundler Cache
+[Bundler](http://bundler.io/) installs and keeps track of all the gem libraries. Keeping docker container build times low is not trivial when bundler is involved. It took some time & research to optimize bundler's cache, so is worth an explanation. Credit to the unboxed team for this [bundler cache technique](https://unboxed.co/blog/docker-re-bundling/).
+
+The `web` service uses the `Dockerfile` to build itself. It defines an `ENTRYPOINT ["/docker-entrypoint.sh"]` bash script which will run the initial `bundle install`. Gems are stored in a docker volume called `bundle_cache` (see `docker-compose.yml`). When any gems are added to the `Gemfile`, this entrypoint script will notice and install them into the cache volume. Because of the entrypoint there is no need to call a special command to do this other than `docker-compose up`. This technique is unique because the cache volume will persist across docker image changes, which greatly reduces build times in the local development environment. 
 
 ## Development 
 
-`docker-compose up` Stand up all services.
+`docker-compose up` Stand up all services. Also installs any new gems if necessary (after switching branches, or pulling from a repo).
 
 `open http://localhost:3000/` Visit the web app service.
+
+`docker-compose exec web bin/update` Install a new gem, or to run a database migration.
 
 `docker-compose down; docker-compose up -d; docker attach jfmkauth_web_1`
 A common call chain to stop any existing/hung containers, stand up all services in detached mode, connect to view web service only (to view running log and interact with byebug).
 
-`docker-compose exec web bin/update` Performs Rails db migration, checks for bundle changes. This will install any new gems in the container but not the image - see next command.  
-
-`docker-compose build` If Gemfile or Gemfile.lock have changed, docker web image needs to be rebuilt. (TODO: make this [more dynamic](http://bradgessler.com/articles/docker-bundler/))
+`docker-compose build` If there are changes to the `Dockerfile` or the `docker-compose` files, the containers may need to be rebuilt.
 
 These [docker shortcuts](https://www.digitalocean.com/community/tutorials/how-to-remove-docker-images-containers-and-volumes) to clean up old docker images/containers/volumes is very handy.
 
@@ -76,7 +83,7 @@ These [docker shortcuts](https://www.digitalocean.com/community/tutorials/how-to
 
 ## Test
 
-`docker-compose exec web bin/rails test` Run tests (also importantly sets Rails.env = 'test').
+`docker-compose exec web rails test` Run tests (also importantly sets Rails.env = 'test').
 
 `vnc://localhost:5900 password:secret` To interactive with and debug Selenium sessions, use VNC to connect to the Selenium service. [VNC Viewer](https://www.realvnc.com/download/viewer/) works well, and on OS X Screen Sharing app is built-in.
 
@@ -118,6 +125,13 @@ Certificate is good for 90 days. To renew, run or schedule a variation of `herok
 - __S3 auth proxy.__ There are a few other project that handle [S3 proxy with authentication](https://www.google.com/search?q=s3+proxy+auth). But one drawback is the app server becomes a bottleneck — which becomes more obvious for large files like video. A mix of pre-signed S3 expiring private content URLs, and publicly served S3 non-sensitive files (e.g. JS, CSS, some content) alleviates this. Admittedly, the proxy/injection I've cooked up is a little brittle — which leads to my next point.
 - __Simple content views.__ `app/controllers/proxy_controller` which parses/proxies/pre-signs S3 content is tightly coupled to my personal needs. If you choose to clone/fork this project for the user management aspect, you'll probably want to yank that controller, related tests, and environment vars. You could just replace it with simple HTML/HAML views.
 - __Devise.__ In future projects I will use [Devise](https://github.com/plataformatec/devise) for authentication. Just wanted to write my own first to better understand the auth & user management process. 
+
+# TODO
+- entrypoint multi commands?
+- v3 volume
+- do we need to precompile or does heroko do that?
+- can we just call rails server? puma config?
+
 
 # License
 Copyright © JFMK, LLC Released under the [MIT License](https://github.com/jfroom/jfmk-auth/blob/master/LICENSE).
