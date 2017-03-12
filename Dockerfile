@@ -67,4 +67,5 @@ ENTRYPOINT ["/docker-entrypoint.sh"]
 # https://unboxed.co/blog/docker-re-bundling/
 
 ENV PATH="/bundle/bin:${PATH}"
+RUN echo "$PATH"
 # Bundle installs with binstubs to our custom /bundle/bin volume path. Let system use those stubs.
