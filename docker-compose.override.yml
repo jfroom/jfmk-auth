@@ -2,16 +2,10 @@ version: '3.1'
 
 services:
   postgres:
-    ports:
-      - '5432:5432'
+    ports: ['5432:5432']
 
   web:
-    ports:
-      - '3000:3000'
-
-  test:
-    ports:
-      - '3001:3001'
+    ports: ['3000:3000', '3001:3001']
 
   selenium:
     ports: ['4444:4444', '5900:5900']

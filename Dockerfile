@@ -51,27 +51,6 @@ WORKDIR $INSTALL_PATH
 # By doing this, Docker will be smart enough to execute all
 # future commands from within this directory.
 
-COPY Gemfile* ./
-# This is going to copy in the Gemfile and Gemfile.lock from our
-# work station at a path relative to the Dockerfile to the
-# jfmk_auth/ path inside of the Docker image.
-#
-# It copies it to /jfmk_auth because of the WORKDIR being set.
-#
-# We copy in our Gemfile before the main app because Docker is
-# smart enough to cache "layers" when you build a Docker image.
-#
-# You see, each command we have in the Dockerfile is going to be
-# ran and then saved as a separate layer. Docker is smart enough
-# to only re-build pieces that change, in order from top to bottom.
-#
-# This is an advanced concept but it means that we'll be able to
-# cache all of our gems so that if we make an application code
-# change, it won't re-run bundle install unless a gem changed.
-
-RUN bundle install --jobs 5
-# Install all gems. Paralleize the jobs for faster install.
-
 COPY . .
 # This might look a bit alien but it's copying in everything from
 # the current directory relative to the Dockerfile, over to the
@@ -81,22 +60,13 @@ COPY . .
 # this is how the unix command cp (copy) works. It stands for the
 # current directory.
 
-#RUN bundle exec rake RAILS_ENV=production DATABASE_URL=postgresql://user:pass@127.0.0.1/dbname ACTION_CABLE_ALLOWED_REQUEST_ORIGINS=foo,bar SECRET_TOKEN=dummytoken assets:precompile
-# Provide a dummy DATABASE_URL and more to Rails so it can pre-compile
-# assets. The values do not need to be real, just valid syntax.
-#
-# If you're saving your assets to a CDN and are working with multiple
-# app instances, you may want to remove this step and deal with asset
-# compilation at a different stage of your deployment.
+COPY ./docker-entrypoint.sh /
+RUN chmod +x /docker-entrypoint.sh
+ENTRYPOINT ["/docker-entrypoint.sh"]
+# Add bundle entry point to handle bundle cache
+# https://unboxed.co/blog/docker-re-bundling/
 
-#VOLUME ["$INSTALL_PATH/public"]
-# In production you will very likely reverse proxy Rails with nginx.
-# This sets up a volume so that nginx can read in the assets from
-# the Rails Docker image without having to copy them to the Docker host.
-
-CMD puma -C config/puma.rb
-# This is the command that's going to be ran by default if you run the
-# Docker image without any arguments.
-#
-# In our case, it will start the Puma app server while passing in
-# its config file.
+ENV BUNDLE_PATH=/bundle/path \
+    BUNDLE_BIN=/bundle/bin
+ENV PATH="${BUNDLE_BIN}:${PATH}"
+# Bundle installs with binstubs to our custom /bundle/bin volume path. Let system use those stubs.

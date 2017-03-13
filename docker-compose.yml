@@ -1,52 +1,52 @@
 version: '3.1'
 
 services:
-  postgres:
-    image: 'postgres:9.6.1'
-    environment:
-      POSTGRES_USER: 'jfmk_auth'
-      POSTGRES_PASSWORD: 'yourpassword'
-    volumes:
-      - 'postgres:/var/lib/postgresql/data'
-    logging:
-      driver: 'none'
-
   web:
     depends_on:
       - postgres
     build: .
-    env_file: .env
-    volumes:
-      - '.:/jfmk_auth'
 
-    # Allow interaction on detached sessions like byebug
-    stdin_open: true
-    tty: true
+    command: >
+      bash -c "
+        # Run test server detached
+        RAILS_ENV=test puma -b tcp://0.0.0.0:3001 -d &&
 
-  test:
-    build: .
+        # Run web server
+        puma -C config/puma.rb
+        "
     env_file: .env
     environment:
-      - RAILS_ENV=test
-      - TEST_APP_HOST=test
-      - PORT=3001
+      - TEST_KEY
+      - AWS_SECRET_ACCESS_KEY
+      - APP_NAME
       - SELENIUM_HOST=selenium
       - SELENIUM_PORT=4444
+      - TEST_APP_HOST=web
+      - TEST_PORT=3001
     volumes:
-      - '.:/jfmk_auth'
-    depends_on:
-      - postgres
-      - selenium
-
-    # Allow interaction on detached sessions like byebug
+      - .:/jfmk_auth
+      - bundle_cache:/bundle
+      # Cache bundle files into a volume. https://unboxed.co/blog/docker-re-bundling/
     stdin_open: true
     tty: true
+    # Allow interaction on detached sessions like byebug
+
+  postgres:
+    image: postgres:9.6.1
+    environment:
+      POSTGRES_USER: jfmk_auth
+      POSTGRES_PASSWORD: yourpassword
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    logging:
+      driver: none
 
   selenium:
     #image: selenium/standalone-firefox-debug:2.48.2
     image: selenium/standalone-chrome-debug:3.0.1-germanium # :2.27 not working
     logging:
-      driver: 'none'
+      driver: none
 
 volumes:
   postgres:
+  bundle_cache:
