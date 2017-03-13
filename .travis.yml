@@ -39,8 +39,6 @@ before_script:
   # The detached `up` also runs entrypoint — but because it's detached,
   # bundle install doesn't finish before shell moves on to next commands.
   - docker ps
-  - printenv | grep 'TEST_KEY'
-  - docker-compose run --rm --no-deps web printenv | grep 'TEST_KEY'
   - docker-compose exec web rails db:setup
 
 script:
