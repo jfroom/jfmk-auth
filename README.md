@@ -49,7 +49,7 @@ Note:
 
 `docker-compose up` Build the docker images, install dependencies, and start the services. 
 
-Once the docker services are build and running, the web service will occupy the current terminal with the running puma server log. Open a new terminal instance to issue any additional commands, or run the prior command in detached mode `docker-compose up -d` to free the current terminal session (more on that below). 
+Once the docker services are build and running, the web service will occupy the current terminal with the running puma server log. Open a new terminal instance to issue any additional commands. 
 
 `docker-compose exec web bin/setup` Set up the database.
 
@@ -69,7 +69,7 @@ The `web` service uses the `Dockerfile` to build itself. It defines an `ENTRYPOI
 `docker-compose exec web bin/update` Install a new gem, or to run a database migration.
 
 `docker-compose down; docker-compose up -d; docker attach jfmkauth_web_1`
-A common call chain to stop any existing/hung containers, stand up all services in detached mode, connect to view web service only (to view running log and interact with byebug).
+A common call chain during development to stop any existing/hung containers, stand up all services in detached mode, connect to view web service only (to view running log and interact with byebug). Be aware 'exec' bypasses the entrypoint script which ensures gems are up to date (use `docker-compose run --rm ...` instead of `docker-compose exec ...` if that is a concern - had to do this for the CI override file).
 
 `docker-compose build` If there are changes to the `Dockerfile` or the `docker-compose` files, the containers may need to be rebuilt.
 
@@ -127,11 +127,7 @@ Certificate is good for 90 days. To renew, run or schedule a variation of `herok
 - __Devise.__ In future projects I will use [Devise](https://github.com/plataformatec/devise) for authentication. Just wanted to write my own first to better understand the auth & user management process. 
 
 # TODO
-- entrypoint multi commands?
-- v3 volume
 - do we need to precompile or does heroko do that?
-- can we just call rails server? puma config?
-
 
 # License
 Copyright © JFMK, LLC Released under the [MIT License](https://github.com/jfroom/jfmk-auth/blob/master/LICENSE).
