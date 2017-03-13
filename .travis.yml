@@ -33,7 +33,7 @@ install:
   - docker-compose build
 
 before_script:
-  - docker-compose run --rm web rails db:setup
+  - docker-compose run --rm --no-deps web rails db:setup
   # Use 'run --rm ...` instead of 'exec ...` so that entrypoint's customized bundle install runs completely.
   - docker-compose -f docker-compose.yml -f docker-compose.ci.yml up -d
   # The detached `up` also runs entrypoint — but because it's detached,
