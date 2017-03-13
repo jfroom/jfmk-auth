@@ -39,14 +39,14 @@ before_script:
   # The detached `up` also runs entrypoint — but because it's detached,
   # bundle install doesn't finish before shell moves on to next commands.
   - docker ps
-  - docker-compose run --rm web rails db:setup
+  - docker-compose exec web rails db:setup
 
 script:
-  - docker-compose run --rm web rails test
+  - docker-compose exec web rails test
 
 before_cache:
   - docker-compose logs > ./log/docker-ci.log
-  - docker-compose run --rm web rails tmp:clear
+  - docker-compose exec web rails tmp:clear
   - docker-compose down
 
 deploy:
