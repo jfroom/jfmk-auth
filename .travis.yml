@@ -1,11 +1,3 @@
-services:
-  - docker
-
-addons:
-  artifacts:
-    paths:
-      - './log'
-
 env:
   - DOCKER_COMPOSE_VERSION=1.11.2
 
@@ -13,9 +5,9 @@ before_install:
   - docker -v
   - docker-compose -v
   - sudo apt-get update
-  #- sudo apt-get install docker-engine
-  #- docker -v
-  #- docker-compose -v
+  - sudo apt-get install docker-engine
+  - docker -v
+  - docker-compose -v
 
   # Once travis supports same version of docker compose, the following can be removed
   - sudo rm /usr/local/bin/docker-compose
