@@ -1,3 +1,7 @@
+sudo: required
+
+services:
+  - docker
 env:
   global:
     - DOCKER_VERSION=17.03.0~ce-0~debian-jessie
@@ -5,13 +9,14 @@ env:
 
 before_install:
   # Install docker
-  - sudo apt-get install apt-transport-https ca-certificates curl python-software-properties
-  - sudo curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
-  - sudo apt-key fingerprint 0EBFCD88
-  - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
-  - sudo apt-get clean
-  - sudo apt-get update
-  - sudo apt-get install docker-ce=17.03.0~ce-0~debian-jessie
+  - docker -v
+  - docker-compose -v
+  - # list docker-engine versions
+  - apt-cache madison docker-engine
+
+  # upgrade docker-engine to specific version
+  - sudo apt-get -o Dpkg::Options::="--force-confnew" install -y docker-engine=${DOCKER_VERSION}
+
   - sudo docker run hello-world
   - docker -v
   - docker-compose -v
