@@ -6,9 +6,6 @@ env:
   global:
     - DOCKER_VERSION=17.03.0~ce-0~ubuntu-trusty
     - DOCKER_COMPOSE_VERSION=1.11.2
-  matrix:
-    - TEST_PATHS=test/models test/integration
-    - TEST_PATHS=test/acceptance
 
 before_install:
   - docker -v
@@ -40,7 +37,7 @@ before_script:
   - docker-compose exec web rails db:setup
 
 script:
-  - docker-compose exec web rails test ${TEST_PATHS}
+  - docker-compose exec web rails test
 
 before_cache:
   - docker-compose logs > ./log/docker-ci.log
