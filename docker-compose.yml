@@ -16,9 +16,7 @@ services:
         "
     env_file: .env
     environment:
-      - TEST_KEY
       - AWS_SECRET_ACCESS_KEY
-      - APP_NAME
       - SELENIUM_HOST=selenium
       - SELENIUM_PORT=4444
       - TEST_APP_HOST=web
@@ -42,8 +40,8 @@ services:
       driver: none
 
   selenium:
-    #image: selenium/standalone-firefox-debug:2.48.2
-    image: selenium/standalone-chrome-debug:3.0.1-germanium # :2.27 not working
+    image: selenium/standalone-chrome-debug:3.0.1-germanium
+    # image: selenium/standalone-firefox-debug:2.48.2
     logging:
       driver: none
 
