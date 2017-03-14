@@ -16,13 +16,11 @@ services:
         "
     env_file: .env
     environment:
-      - TEST_KEY
-      - AWS_SECRET_ACCESS_KEY
-      - APP_NAME
       - SELENIUM_HOST=selenium
       - SELENIUM_PORT=4444
       - TEST_APP_HOST=web
       - TEST_PORT=3001
+      - AWS_SECRET_ACCESS_KEY
     volumes:
       - .:/jfmk_auth
       - bundle_cache:/bundle
