@@ -6,19 +6,18 @@ env:
   global:
     - DOCKER_VERSION=17.03.0~ce-0~ubuntu-trusty
     - DOCKER_COMPOSE_VERSION=1.11.2
+  matrix:
+    - TEST_SUITE=/models
+    - TEST_SUITE=/integration
+    - TEST_SUITE=/acceptance
 
 before_install:
-  # Install docker
   - docker -v
   - docker-compose -v
-  - # list docker-engine versions
+  - # List docker-engine versions
   - apt-cache madison docker-engine
-
-  # upgrade docker-engine to specific version
-  #- sudo apt-get -o Dpkg::Options::="--force-confnew" install -y docker-engine=${DOCKER_VERSION}
-
-  #- sudo apt-get install docker-engine=${DOCKER_ENGINE}
-  - sudo apt-get install docker-engine=17.03.0~ce-0~ubuntu-trusty
+  - # Update docker
+  - sudo apt-get install docker-engine=${DOCKER_VERSION}
   - sudo docker run hello-world
   - docker -v
   - docker-compose -v
@@ -42,7 +41,7 @@ before_script:
   - docker-compose exec web rails db:setup
 
 script:
-  - docker-compose exec web rails test
+  - docker-compose exec web rails test test/${TEST_SUITE}
 
 before_cache:
   - docker-compose logs > ./log/docker-ci.log
