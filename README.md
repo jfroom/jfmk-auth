@@ -5,16 +5,16 @@ JFMK-Auth
 
 # Overview
 
-Simple Rails user management & authentication web app to proxy a private single-page app with pre-signed, expiring content URLs from AWS S3.
+Rails personal project with user management & authentication to proxy serve a private, single-page app.
 
 ## Technologies
 
-- Rails 5, Postgres, Selenium, AWS S3, HAML, CoffeeScript, Bootstrap, SCSS
-- Docker Compose for development & test; Travis for CI/CD; Heroku Pipelines for production
-- Simple [`has_secure_password`](http://api.rubyonrails.org/classes/ActiveModel/SecurePassword/ClassMethods.html) Rails API for authentication & cookie sessions. User is locked out after X failed attempts.
+- Rails 5, Postgres, Selenium, AWS S3, HAML, CoffeeScript, Bootstrap, SCSS 
+- Docker Compose for development & test; Travis for CI/CD; [Heroku Pipelines](https://devcenter.heroku.com/articles/pipelines) for production
+- 'Simple' [`has_secure_password`](http://api.rubyonrails.org/classes/ActiveModel/SecurePassword/ClassMethods.html) Rails API for authentication & cookie sessions. User is locked out after X failed attempts.
+- Authenticated users are served single-page app with a proxied index page, and expiring pre-signed URLs for sensitive S3 hosted content are parsed/injected. Demo content is instance of [`jfroom/portfolio-web`](//github.com/jfroom/portfolio-web).
 - Tests with MiniTest for models & integration, and Capybara Selenium acceptance tests running in a docker service with Chrome standalone.
 - VNC locally into the Selenium session to interact and debug.
-- Authenticated users are served single-page app with a proxied index page, and expiring pre-signed URLs for sensitive S3 hosted content are parsed/injected. Demo content is instance of [`jfroom/portfolio-web`](//github.com/jfroom/portfolio-web).
 - Let's Encrypt SSL certificates auto bound to the custom Heroku domain with [`letsencrypt-rails-heroku`](https://github.com/pixielabs/letsencrypt-rails-heroku).
 - Notify admin by email when user has logged in; sent with [SES](https://aws.amazon.com/ses/)
 - Mailer job runs async in background job with [Sucker Punch](https://github.com/brandonhilkert/sucker_punch) 
@@ -51,14 +51,9 @@ Note:
 
 Once the docker services are build and running, the web service will occupy the current terminal with the running puma server log. Open a new terminal instance to issue any additional commands. 
 
-`docker-compose exec web bin/setup` Set up the database.
+`docker-compose exec web rails db:setup` Set up the database.
 
 `docker-compose exec web rails db:seed` Seed the database with two users: `admin:Admin123` and `user:User123`. Use the admin login to change those immediately.
-
-### Docker's Bundler Cache
-[Bundler](http://bundler.io/) installs and keeps track of all the gem libraries. Keeping docker container build times low is not trivial when bundler is involved. It took some time & research to optimize bundler's cache, so is worth an explanation. Credit to the unboxed team for this [bundler cache technique](https://unboxed.co/blog/docker-re-bundling/).
-
-The `web` service uses the `Dockerfile` to build itself. It defines an `ENTRYPOINT ["/docker-entrypoint.sh"]` bash script which will run the initial `bundle install`. Gems are stored in a docker volume called `bundle_cache` (see `docker-compose.yml`). When any gems are added to the `Gemfile`, this entrypoint script will notice and install them into the cache volume. Because of the entrypoint there is no need to call a special command to do this other than `docker-compose up`. This technique is unique because the cache volume will persist across docker image changes, which greatly reduces build times in the local development environment. 
 
 ## Development 
 
@@ -119,15 +114,20 @@ On the production app's custom domain, [Let's Encrypt](https://letsencrypt.org/)
 
 Certificate is good for 90 days. To renew, run or schedule a variation of `heroku run -a jfmk-auth rake letsencrypt:renew`.
 
-# Alternatives and Caveats
+# Noteworthy
+
+## Docker's Bundler Cache
+
+[Bundler](http://bundler.io/) installs and keeps track of all the gem libraries. Keeping docker container build times low is not trivial when bundler is involved. It took some time & research to optimize bundler's cache, so is worth an explanation. Credit to the unboxed team for this [bundler cache technique](https://unboxed.co/blog/docker-re-bundling/).
+
+The `web` service uses the `Dockerfile` to build itself. It defines an `ENTRYPOINT ["/docker-entrypoint.sh"]` bash script which will run the initial `bundle install`. Gems are stored in a docker volume called `bundle_cache` (see `docker-compose.yml`). When any gems are added to the `Gemfile`, this entrypoint script will notice and install them into the cache volume. Because of the entrypoint, there is no need to call a special command to do this other than `docker-compose up`. This technique is unique because the cache volume will persist across docker image changes, which reduces build times (and increases sanity) during local development. 
+
+## Alternatives and Caveats
 
 - __[S3Auth.com](http://s3auth.com)__ If you want a quick way to just password protect a static S3 website with Basic HTTP Auth, check out [S3Auth](https://github.com/yegor256/s3auth), and this related [article](http://www.yegor256.com/2014/04/21/s3-http-basic-auth.html).
 - __S3 auth proxy.__ There are a few other project that handle [S3 proxy with authentication](https://www.google.com/search?q=s3+proxy+auth). But one drawback is the app server becomes a bottleneck — which becomes more obvious for large files like video. A mix of pre-signed S3 expiring private content URLs, and publicly served S3 non-sensitive files (e.g. JS, CSS, some content) alleviates this. Admittedly, the proxy/injection I've cooked up is a little brittle — which leads to my next point.
 - __Simple content views.__ `app/controllers/proxy_controller` which parses/proxies/pre-signs S3 content is tightly coupled to my personal needs. If you choose to clone/fork this project for the user management aspect, you'll probably want to yank that controller, related tests, and environment vars. You could just replace it with simple HTML/HAML views.
 - __Devise.__ In future projects I will use [Devise](https://github.com/plataformatec/devise) for authentication. Just wanted to write my own first to better understand the auth & user management process. 
-
-# TODO
-- do we need to precompile or does heroko do that?
 
 # License
 Copyright © JFMK, LLC Released under the [MIT License](https://github.com/jfroom/jfmk-auth/blob/master/LICENSE).
