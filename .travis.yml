@@ -8,7 +8,7 @@ env:
     - DOCKER_COMPOSE_VERSION=1.11.2
   matrix:
     - TEST_PATHS=test/models test/integration
-    - TEST_PATHS=/acceptance
+    - TEST_PATHS=test/acceptance
 
 before_install:
   - docker -v
