@@ -1,6 +1,7 @@
 env:
-  - DOCKER_VERSION=17.03.0~ce-0~debian-jessie
-  - DOCKER_COMPOSE_VERSION=1.11.2
+  global:
+    - DOCKER_VERSION=17.03.0~ce-0~debian-jessie
+    - DOCKER_COMPOSE_VERSION=1.11.2
 
 before_install:
   # Install docker
@@ -8,7 +9,7 @@ before_install:
   - sudo curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
   - sudo apt-key fingerprint 0EBFCD88
   - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
-  - sudo apt-get update
+  #- sudo apt-get update
   - sudo apt-get install docker-ce=${DOCKER_VERSION}
   - sudo docker run hello-world
   - docker -v
