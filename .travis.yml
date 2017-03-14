@@ -17,7 +17,8 @@ before_install:
   # upgrade docker-engine to specific version
   #- sudo apt-get -o Dpkg::Options::="--force-confnew" install -y docker-engine=${DOCKER_VERSION}
 
-  - sudo apt-get install docker-engine=${DOCKER_ENGINE}
+  #- sudo apt-get install docker-engine=${DOCKER_ENGINE}
+  - sudo apt-get install docker-engine=17.03.0~ce-0~ubuntu-trusty
   - sudo docker run hello-world
   - docker -v
   - docker-compose -v
