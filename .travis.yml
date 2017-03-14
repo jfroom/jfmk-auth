@@ -1,9 +1,15 @@
 env:
   - DOCKER_COMPOSE_VERSION=1.11.2
 
+services:
+  - docker
+
 before_install:
+  - docker -v
+  - docker-compose -v
   - sudo apt-get update
-  - sudo apt-get install docker-engine
+  - sudo apt-get remove docker docker-engine
+  - sudo apt-get install docker-engine # Update docker
   - docker -v
   - docker-compose -v
 
