@@ -20,6 +20,7 @@ services:
       - SELENIUM_PORT=4444
       - TEST_APP_HOST=web
       - TEST_PORT=3001
+      - AWS_SECRET_ACCESS_KEY
     volumes:
       - .:/jfmk_auth
       - bundle_cache:/bundle
