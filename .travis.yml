@@ -4,7 +4,7 @@ services:
   - docker
 env:
   global:
-    - DOCKER_VERSION=17.03.0~ce-0~debian-jessie
+    - DOCKER_VERSION=17.03.0~ce-0~ubuntu-trusty
     - DOCKER_COMPOSE_VERSION=1.11.2
 
 before_install:
@@ -15,8 +15,9 @@ before_install:
   - apt-cache madison docker-engine
 
   # upgrade docker-engine to specific version
-  - sudo apt-get -o Dpkg::Options::="--force-confnew" install -y docker-engine=${DOCKER_VERSION}
+  #- sudo apt-get -o Dpkg::Options::="--force-confnew" install -y docker-engine=${DOCKER_VERSION}
 
+  - sudo apt-get install docker-engine=${DOCKER_ENGINE}
   - sudo docker run hello-world
   - docker -v
   - docker-compose -v
