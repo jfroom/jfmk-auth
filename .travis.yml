@@ -3,6 +3,10 @@ language: ruby
 services:
   - docker
 
+addons:
+  artifacts:
+    paths:
+      - './log'
 env:
   global:
     - DOCKER_VERSION=17.03.0~ce-0~ubuntu-trusty
