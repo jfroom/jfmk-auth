@@ -1,9 +1,4 @@
-JFMK-Auth 
-==========
-
-[![Build Status](https://travis-ci.org/jfroom/jfmk-auth.svg?branch=master)](https://travis-ci.org/jfroom/jfmk-auth)
-
-# Overview
+# JFMK-Auth [![Build Status](https://travis-ci.org/jfroom/jfmk-auth.svg?branch=master)](https://travis-ci.org/jfroom/jfmk-auth)
 
 Rails personal project with user management & authentication to proxy serve a private, single-page app.
 
