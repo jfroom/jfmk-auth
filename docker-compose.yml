@@ -5,7 +5,6 @@ services:
     depends_on:
       - postgres
     build: .
-
     command: >
       bash -c "
         # Run test server detached
