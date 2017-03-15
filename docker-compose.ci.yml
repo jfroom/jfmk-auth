@@ -5,7 +5,8 @@ services:
     expose: [5432] # Not exposing port externally because it conflicts a port used by Travis
 
   web:
-    expose: [3000, 3001]
+    command: bash -c "RAILS_ENV=test puma -b tcp://0.0.0.0:3001"
+    expose: [3001]
 
   selenium:
     expose: [4444, 5900]

@@ -5,15 +5,6 @@ services:
     depends_on:
       - postgres
     build: .
-
-    command: >
-      bash -c "
-        # Run test server detached
-        RAILS_ENV=test puma -b tcp://0.0.0.0:3001 -d &&
-
-        # Run web server
-        puma -C config/puma.rb
-        "
     env_file: .env
     environment:
       - AWS_SECRET_ACCESS_KEY
