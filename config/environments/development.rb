@@ -1,3 +1,6 @@
+require 'socket'
+require 'ipaddr'
+
 Rails.application.configure do
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development
@@ -44,4 +47,10 @@ Rails.application.configure do
   # Use an evented file watcher to asynchronously detect changes in source
   # code, routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
+
+  # Whitelist web console for local IP
+  # http://stackoverflow.com/a/42142563/281809
+  config.web_console.whitelisted_ips = Socket.ip_address_list.reduce([]) do |res, addrinfo|
+    addrinfo.ipv4? ? res << IPAddr.new(addrinfo.ip_address).mask(24) : res
+  end
 end
