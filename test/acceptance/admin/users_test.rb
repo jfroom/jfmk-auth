@@ -52,6 +52,9 @@ class Admin::UsersTest < AcceptanceTest
     @users_page.click_new_user
     assert_current_path new_admin_user_path
     @users_page.click_save
+
+    # Verify errors messages
+    assert @users_page.has_headline?('New User')
     assert @users_page.has_errors?(
         "3 errors prohibited this user from being saved.",
         [
@@ -60,8 +63,6 @@ class Admin::UsersTest < AcceptanceTest
           "Password can't be blank"
         ]
     )
-
-    # Verify errors messages
     assert @users_page.has_input_error?(:username, "Username can't be blank and must be alpha-numeric.")
     assert @users_page.has_input_error?(:password, "Password can't be blank.")
     assert @users_page.has_no_input_error?(:first_name)

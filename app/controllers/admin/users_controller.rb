@@ -23,6 +23,7 @@ class Admin::UsersController < ApplicationController
       redirect_to admin_users_path
     else
       # Show errors
+      @title = 'New User'
       @action = :create
       render FORM_VIEW
     end
@@ -53,6 +54,7 @@ class Admin::UsersController < ApplicationController
       redirect_to admin_users_path
     else
       # Show errors
+      @title = 'Edit User'
       @action = :edit
       render FORM_VIEW
     end
