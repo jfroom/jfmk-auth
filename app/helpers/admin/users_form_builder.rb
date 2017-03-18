@@ -28,13 +28,13 @@ class Admin::UsersFormBuilder < ActionView::Helpers::FormBuilder
       o += @template.content_tag(:div, {class: 'input-group'}) do
         o = ''.html_safe
         o += @template.content_tag(:span, add_on, {class: 'input-group-addon'}) if add_on.present?
+        if errors.present?
+          o += @template.content_tag(:span, class: 'form-control-feedback') do
+            "<i class='fa fa-remove'></i>".html_safe
+          end
+        end
         o += block.call
         o
-      end
-      if errors.present?
-        o += @template.content_tag(:span, class: 'form-control-feedback') do
-          "<i class='fa fa-remove'></i>".html_safe
-        end
       end
       if errors.present?
         o += @template.content_tag(:p, "#{label_text} #{errors.uniq.to_sentence}.", {class: 'validation-error'})
