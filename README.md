@@ -14,6 +14,7 @@ Rails personal project with user management & authentication to proxy serve a pr
 - Notify admin by email when user has logged in; sent with [SES](https://aws.amazon.com/ses/)
 - Mailer job runs async in background job with [Sucker Punch](https://github.com/brandonhilkert/sucker_punch) 
 - Project initially seeded with [`nickjj/orats`](//github.com/nickjj/orats) Rails template which was very helpful figuring out the `docker-compose` setup.
+- [HoundCI](https://houndci.com) & [Rubocop](https://github.com/bbatsov/rubocop) help keep styles consistent
 
 ## Demo
 
@@ -35,8 +36,9 @@ Note:
 2. Verify versions: `docker -v; docker-compose -v;`
 
 ## Recommended
-1. Install [pgAdmin](https://www.pgadmin.org/download/) for a SQL gui client. 
-2. Install [VNC Viewer](https://www.realvnc.com/download/viewer/) to view & interact with selenium sessions that would otherwise be headless.
+1. Install some docker-compose aliases. I use [`docker-compose.plugin.zsh`](https://github.com/robbyrussell/oh-my-zsh/blob/master/plugins/docker-compose/docker-compose.plugin.zsh) for oh-my-zsh. (Ex. `alias dcup='docker-compose up`)
+2. Install [pgAdmin](https://www.pgadmin.org/download/) for a SQL gui client. 
+3. Install [VNC Viewer](https://www.realvnc.com/download/viewer/) to view & interact with selenium sessions that would otherwise be headless.
 
 # Build
 

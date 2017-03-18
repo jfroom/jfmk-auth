@@ -44,7 +44,8 @@
             Currently user has #{@user.login_attempts} login attempts, and gets locked on 3rd attempt/fail.
             Unlocking sets attempts back to 0.
     .row
-      .form-group.text-right
-        = link_to @action == :show ? 'Back to Users' : 'Cancel', admin_users_path, {class: 'btn btn-lg btn-default'}
-        - unless @action == :show
-          = f.submit 'Save', {class: 'btn btn-lg btn-success', data: {disable_with: 'Saving…'}}
+      .col-md-12
+        .form-group.text-right
+          = link_to @action == :show ? 'Back to Users' : 'Cancel', admin_users_path, {class: 'btn btn-lg btn-default'}
+          - unless @action == :show
+            = f.submit 'Save', {class: 'btn btn-lg btn-success', data: {disable_with: 'Saving…'}}
