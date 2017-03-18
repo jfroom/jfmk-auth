@@ -76,7 +76,11 @@ class ProxyController < ApplicationController
   def html_log_out
     %(
 <ul class='nav navbar-nav navbar-right'>
-  <li><a href='#{logout_url}' target='_self' id='log-out'>Log Out, #{@current_user.first_name}</a></li>
+  <li>
+    <a href='#{logout_url}' target='_self' id='log-out'>
+      <i class='fa fa-sign-out fa-lg'></i>Log Out, #{@current_user.first_name}
+    </a>
+  </li>
 </ul>
     )
   end
