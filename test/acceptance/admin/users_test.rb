@@ -69,7 +69,7 @@ class Admin::UsersTest < AcceptanceTest
     assert @users_page.has_no_input_error?(:name)
 
     # Try to create duplicate username, and bad password
-    my_user = { username: 'awesome', password: 'Awesome123', name: 'Awesome Human' }
+    my_user = {username: 'awesome', password: 'Awesome123', name: 'Awesome Human'}
     @users_page.fill_in :username, 'client'
     @users_page.fill_in :password, 'nope'
     @users_page.fill_in :name, my_user[:name]
@@ -99,7 +99,7 @@ class Admin::UsersTest < AcceptanceTest
     assert_current_path admin_user_path(User.last.id)
     assert @users_page.has_headline?('View User')
     assert @users_page.has_breadcrumb?(
-        [{ label: 'Admin', link: '/admin' }, { label: 'Manage Users', link: '/admin/users' }, { label: 'View User' }]
+        [{label: 'Admin', link: '/admin'}, {label: 'Manage Users', link: '/admin/users'}, {label: 'View User'}]
     )
     assert @users_page.has_field?(:username, my_user[:username], true)
     assert @users_page.has_field?(:password, '', true)
