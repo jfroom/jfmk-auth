@@ -1,7 +1,7 @@
 - title @title
 - heading @title
 - css_class 'admin users'
-- breadcrumb [{label: 'Admin', link: admin_root_path}, {label: 'Users', link: admin_users_path}, {label: @title}]
+- breadcrumb [{label: 'Admin', link: admin_root_path}, {label: 'Manage Users', link: admin_users_path}, {label: @title}]
 
 - opts = @action == :show ? {disabled: 'disabled'} : {}
 
@@ -28,13 +28,8 @@
         opts.merge({maxlength: 32})
     .row
       .col-md-6
-        = f.text_field :first_name, 'First Name', 'Max length 32.', nil, @user.errors[:first_name],
+        = f.text_field :name, 'Name', 'Max length 32.', nil, @user.errors[:name],
         opts.merge({maxlength: 32})
-
-      .col-md-6
-        = f.text_field :last_name, 'Last Name', 'Max length 32.', nil, @user.errors[:last_name],
-        opts.merge({maxlength: 32})
-    .row
       .col-md-6
         .checkbox
           %label

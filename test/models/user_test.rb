@@ -18,9 +18,8 @@ class UserTest < ActiveSupport::TestCase
     should_not allow_value('password1', 'password', '123456', 'P@ssword1').for(:password)
                    .with_message('must contain at least one uppercase letter, one lowercase letter and one number')
 
-    # First and last name
-    should validate_length_of(:first_name).is_at_most(32)
-    should validate_length_of(:last_name).is_at_most(32)
+    # Name
+    should validate_length_of(:name).is_at_most(32)
 
     # Password
     should have_secure_password

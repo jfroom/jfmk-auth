@@ -26,8 +26,8 @@ class Admin::UsersTest < AcceptanceTest
 
     # Verify users list
     assert @users_page.has_log_out?('Admin')
-    assert @users_page.has_headline?('Users')
-    assert @users_page.has_breadcrumb?([{label: 'Admin', link: '/admin'}, {label: 'Users'}])
+    assert @users_page.has_headline?('Manage Users')
+    assert @users_page.has_breadcrumb?([{label: 'Admin', link: '/admin'}, {label: 'Manage Users'}])
     assert @users_page.has_user_table_header?
     user_orig_count = User.count
     assert @users_page.has_users_count?(User.count)
@@ -41,7 +41,7 @@ class Admin::UsersTest < AcceptanceTest
     assert_current_path new_admin_user_path
     assert @users_page.has_headline?('New User')
     assert @users_page.has_breadcrumb?(
-        [{label: 'Admin', link: '/admin'}, {label: 'Users', link: '/admin/users'}, {label: 'New User'}])
+        [{label: 'Admin', link: '/admin'}, {label: 'Manage Users', link: '/admin/users'}, {label: 'New User'}])
 
     # Cancel button goes back to users index
     @users_page.click_cancel
@@ -65,21 +65,18 @@ class Admin::UsersTest < AcceptanceTest
     )
     assert @users_page.has_input_error?(:username, "Username can't be blank and must be alpha-numeric.")
     assert @users_page.has_input_error?(:password, "Password can't be blank.")
-    assert @users_page.has_no_input_error?(:first_name)
-    assert @users_page.has_no_input_error?(:last_name)
+    assert @users_page.has_no_input_error?(:name)
 
     # Try to create duplicate username, and bad password
-    my_user = {username: 'awesome', password: 'Awesome123', first_name: 'Awesome', last_name: 'Human'}
+    my_user = {username: 'awesome', password: 'Awesome123', name: 'Awesome Human'}
     @users_page.fill_in :username, 'client'
     @users_page.fill_in :password, 'nope'
-    @users_page.fill_in :first_name, my_user[:first_name]
-    @users_page.fill_in :last_name, my_user[:last_name]
+    @users_page.fill_in :name, my_user[:name]
     @users_page.click_save
 
     assert @users_page.has_field?(:username, 'client')
     assert @users_page.has_field?(:password, '')
-    assert @users_page.has_field?(:first_name, my_user[:first_name])
-    assert @users_page.has_field?(:last_name, my_user[:last_name])
+    assert @users_page.has_field?(:name, my_user[:name])
     assert @users_page.has_errors?(3)
     assert @users_page.has_input_error?(:username, "Username has already been taken.")
     assert @users_page.has_input_error?(:password, "Password is too short (minimum is 6 characters) " \
@@ -101,11 +98,10 @@ class Admin::UsersTest < AcceptanceTest
     assert_current_path admin_user_path(User.last.id)
     assert @users_page.has_headline?('View User')
     assert @users_page.has_breadcrumb?(
-        [{label: 'Admin', link: '/admin'}, {label: 'Users', link: '/admin/users'}, {label: 'View User'}])
+        [{label: 'Admin', link: '/admin'}, {label: 'Manage Users', link: '/admin/users'}, {label: 'View User'}])
     assert @users_page.has_field?(:username, my_user[:username], true)
     assert @users_page.has_field?(:password, '', true)
-    assert @users_page.has_field?(:first_name, my_user[:first_name], true)
-    assert @users_page.has_field?(:last_name, my_user[:last_name], true)
+    assert @users_page.has_field?(:name, my_user[:name], true)
     assert @users_page.has_no_checked_field?(:login_locked, true)
     assert @users_page.has_no_save_btn?
     @users_page.click_back_to_users
@@ -116,19 +112,16 @@ class Admin::UsersTest < AcceptanceTest
     assert_current_path edit_admin_user_path(User.last.id)
     assert @users_page.has_headline?('Edit User')
     assert @users_page.has_breadcrumb?(
-        [{label: 'Admin', link: '/admin'}, {label: 'Users', link: '/admin/users'}, {label: 'Edit User'}])
+        [{label: 'Admin', link: '/admin'}, {label: 'Manage Users', link: '/admin/users'}, {label: 'Edit User'}])
     assert @users_page.has_field?(:username, my_user[:username])
     assert @users_page.has_field?(:password, my_user[:password])
-    assert @users_page.has_field?(:first_name, my_user[:first_name])
-    assert @users_page.has_field?(:last_name, my_user[:last_name])
+    assert @users_page.has_field?(:name, my_user[:name])
     assert @users_page.has_cancel_btn?
 
     # Change name
     my_user_dup = my_user.dup
-    my_user_dup[:first_name] = "#{my_user[:first_name]}2"
-    my_user_dup[:last_name] = "#{my_user[:last_name]}2"
-    @users_page.fill_in(:first_name, my_user_dup[:first_name])
-    @users_page.fill_in(:last_name, my_user_dup[:last_name])
+    my_user_dup[:name] = "#{my_user[:name]}2"
+    @users_page.fill_in(:name, my_user_dup[:name])
     @users_page.click_save
 
     # Verify name changed in list

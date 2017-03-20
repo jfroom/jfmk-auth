@@ -9,6 +9,6 @@
 # Character.create(name: 'Luke', movie: movies.first)
 
 User.create [
-                {username: 'admin', password: 'Admin123', first_name: 'Admin', last_name: 'User', admin: true},
-                {username: 'user', password: 'User123', first_name: 'User', last_name: 'Name'}
+                {username: 'admin', password: 'Secret1', name: 'Admin', admin: true},
+                {username: 'user', password: 'Secret1', name: 'User'}
             ]

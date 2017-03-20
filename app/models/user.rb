@@ -12,8 +12,7 @@ class User < ApplicationRecord
                 message: 'must contain at least one uppercase letter, one lowercase letter and one number'
             }
 
-  validates :first_name, length: {maximum: 32}
-  validates :last_name, length: {maximum: 32}
+  validates :name, length: {maximum: 32}
 
   class << self
     def is_login_locked?(username)
