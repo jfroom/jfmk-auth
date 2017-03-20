@@ -41,7 +41,8 @@ class Admin::UsersTest < AcceptanceTest
     assert_current_path new_admin_user_path
     assert @users_page.has_headline?('New User')
     assert @users_page.has_breadcrumb?(
-        [{label: 'Admin', link: '/admin'}, {label: 'Manage Users', link: '/admin/users'}, {label: 'New User'}])
+        [{label: 'Admin', link: '/admin'}, {label: 'Manage Users', link: '/admin/users'}, {label: 'New User'}]
+    )
 
     # Cancel button goes back to users index
     @users_page.click_cancel
@@ -68,7 +69,7 @@ class Admin::UsersTest < AcceptanceTest
     assert @users_page.has_no_input_error?(:name)
 
     # Try to create duplicate username, and bad password
-    my_user = {username: 'awesome', password: 'Awesome123', name: 'Awesome Human'}
+    my_user = { username: 'awesome', password: 'Awesome123', name: 'Awesome Human' }
     @users_page.fill_in :username, 'client'
     @users_page.fill_in :password, 'nope'
     @users_page.fill_in :name, my_user[:name]
@@ -98,7 +99,8 @@ class Admin::UsersTest < AcceptanceTest
     assert_current_path admin_user_path(User.last.id)
     assert @users_page.has_headline?('View User')
     assert @users_page.has_breadcrumb?(
-        [{label: 'Admin', link: '/admin'}, {label: 'Manage Users', link: '/admin/users'}, {label: 'View User'}])
+        [{ label: 'Admin', link: '/admin' }, { label: 'Manage Users', link: '/admin/users' }, { label: 'View User' }]
+    )
     assert @users_page.has_field?(:username, my_user[:username], true)
     assert @users_page.has_field?(:password, '', true)
     assert @users_page.has_field?(:name, my_user[:name], true)
@@ -112,7 +114,8 @@ class Admin::UsersTest < AcceptanceTest
     assert_current_path edit_admin_user_path(User.last.id)
     assert @users_page.has_headline?('Edit User')
     assert @users_page.has_breadcrumb?(
-        [{label: 'Admin', link: '/admin'}, {label: 'Manage Users', link: '/admin/users'}, {label: 'Edit User'}])
+        [{label: 'Admin', link: '/admin'}, {label: 'Manage Users', link: '/admin/users'}, {label: 'Edit User'}]
+    )
     assert @users_page.has_field?(:username, my_user[:username])
     assert @users_page.has_field?(:password, my_user[:password])
     assert @users_page.has_field?(:name, my_user[:name])
