@@ -7,23 +7,20 @@
 admin:
   username: admin
   password_digest: <%= BCrypt::Password.create('Secret1') %>
-  first_name: Admin
-  last_name: User
+  name: Admin
   admin: true
   created_at: <%= stamp %>
 
 client:
   username: client
   password_digest: <%= BCrypt::Password.create('Secret1') %>
-  first_name: Client
-  last_name: Smith
+  name: Client
   created_at: <%= stamp %>
 
 acme:
   username: acme
   password_digest: <%= BCrypt::Password.create('Secret1') %>
-  first_name: Acme
-  last_name: Co
+  name: Acme
   created_at: <%= stamp %>
 
 client_locked:
@@ -31,6 +28,5 @@ client_locked:
   password_digest: <%= BCrypt::Password.create('Secret1') %>
   login_attempts: 3
   login_locked: true
-  first_name: Client
-  last_name: Locked
+  name: Locked
   created_at: <%= stamp %>

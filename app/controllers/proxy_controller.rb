@@ -78,7 +78,7 @@ class ProxyController < ApplicationController
 <ul class='nav navbar-nav navbar-right'>
   <li>
     <a href='#{logout_url}' target='_self' id='log-out'>
-      <i class='fa fa-sign-out fa-lg'></i>Log Out, #{@current_user.first_name}
+      <i class='fa fa-sign-out fa-lg'></i>Log Out, #{@current_user.name}
     </a>
   </li>
 </ul>

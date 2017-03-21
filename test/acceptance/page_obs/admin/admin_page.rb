@@ -1,8 +1,8 @@
 require "acceptance/page_obs/base_page"
 
 class Admin::AdminPage < Page::Base
-  def has_log_out?(first_name)
-    page.has_css? 'a#log-out', text: "Log Out, #{first_name}"
+  def has_log_out?(name)
+    page.has_css? 'a#log-out', text: "Log Out, #{name}"
   end
 
   def has_no_breadcrumb?

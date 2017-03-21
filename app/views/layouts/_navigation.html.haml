@@ -12,7 +12,7 @@
       .navbar-collapse.collapse
         %ul.nav.navbar-nav.navbar-right
           %li
-            =link_to "Log Out, #{@current_user.first_name}", logout_path, id: 'log-out'
+            = link_to "Log Out, #{@current_user.name}", logout_path, id: 'log-out'
 
 - if @page_breadcrumb.present?
   .container

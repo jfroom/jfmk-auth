@@ -1,7 +1,7 @@
 require "acceptance/page_obs/admin/admin_page"
 
 class Admin::UsersPage < Admin::AdminPage
-  ATTRIBUTES = [:username, :first_name, :last_name, :admin, :login_locked, :login_attempts].freeze
+  ATTRIBUTES = [:username, :name, :admin, :login_locked, :login_attempts].freeze
 
   def has_user_table_header?
     # Verify number of TH vs. attributes
@@ -160,7 +160,7 @@ class Admin::UsersPage < Admin::AdminPage
 
   private
 
-  def input_id(id) # :username, :password, :first_name, :last_name, :login_locked
+  def input_id(id) # :username, :password, :name, :login_locked
     "user_#{id}"
   end
 

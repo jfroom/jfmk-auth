@@ -72,6 +72,6 @@ class Admin::UsersController < ApplicationController
   private
 
   def user_params
-    params[:user].permit(:username, :password, :first_name, :last_name, :login_locked)
+    params[:user].permit(:username, :password, :name, :login_locked)
   end
 end

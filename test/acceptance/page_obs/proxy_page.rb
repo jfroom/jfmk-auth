@@ -45,8 +45,8 @@ class ProxyPage < Page::Base
     page.find(".work-thumb-item:nth-of-type(#{idx + 1})").click
   end
 
-  def has_log_out?(first_name)
-    page.has_css? 'a#log-out', text: "Log Out, #{first_name}"
+  def has_log_out?(name)
+    page.has_css? 'a#log-out', text: "Log Out, #{name}"
   end
 
   def click_log_out
