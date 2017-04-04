@@ -44,7 +44,7 @@ Note:
 
 ## First run
 
-`docker-compose up` Build the docker images, install dependencies, and start the services. 
+`docker-compose up --build` Build the docker images, install dependencies, and start the services. 
 
 Once the docker services are build and running, the web service will occupy the current terminal with the running puma server log. Open a new terminal instance to issue any additional commands. 
 
