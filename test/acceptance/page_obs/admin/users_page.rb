@@ -1,7 +1,7 @@
 require "acceptance/page_obs/admin/admin_page"
 
 class Admin::UsersPage < Admin::AdminPage
-  ATTRIBUTES = [:username, :name, :admin, :login_locked, :login_attempts].freeze
+  ATTRIBUTES = [:username, :name, :admin, :allow_auto_login, :login_locked, :login_attempts].freeze
 
   def has_user_table_header?
     # Verify number of TH vs. attributes
@@ -143,11 +143,11 @@ class Admin::UsersPage < Admin::AdminPage
   end
 
   def check(id)
-    page.check id: input_id(:login_locked)
+    page.check id: input_id(id)
   end
 
   def uncheck(id)
-    page.uncheck id: input_id(:login_locked)
+    page.uncheck id: input_id(id)
   end
 
   def has_demo_mode_flash?
@@ -156,6 +156,10 @@ class Admin::UsersPage < Admin::AdminPage
 
   def has_no_demo_mode_flash?
     page.has_no_css?('.alert-warning', text: Admin::UsersController::DEMO_MSG)
+  end
+
+  def has_help_block_content?(id, content)
+    page.find("##{id.to_s.dasherize} .help-block").has_content? content
   end
 
   private

@@ -10,5 +10,7 @@ Rails.application.routes.draw do
     resources :users
   end
 
+  get ':username', to: 'sessions#auto_login'
+
   Test::BackdoorController.load_routes if Rails.env.test?
 end

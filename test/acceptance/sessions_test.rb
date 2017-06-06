@@ -93,5 +93,16 @@ class SessionsTest < AcceptanceTest
     assert_current_path login_path
     assert @sessions_page.has_alert_count?(0)
     verify_login_page
+
+    # Acme client not allowed to login automatically
+    visit root_path + 'acme'
+    assert_current_path login_path
+    assert @sessions_page.has_invalid_username_alert?
+
+    # User with allow_auto_login
+    visit root_path + 'clientautologin'
+    assert_current_path root_path
+    assert @proxy_page.has_proxy_content?
+    assert @sessions_page.has_alert_count?(0)
   end
 end

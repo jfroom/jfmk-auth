@@ -30,7 +30,7 @@
       .col-md-6
         = f.text_field :name, 'Name', 'Max length 32.', nil, @user.errors[:name],
         opts.merge({maxlength: 32})
-      .col-md-6
+      .col-md-3
         .checkbox
           %label
             = f.check_box :login_locked, opts
@@ -38,6 +38,13 @@
           %p.help-block
             Currently user has #{@user.login_attempts} login attempts, and gets locked on 3rd attempt/fail.
             Unlocking sets attempts back to 0.
+      .col-md-3
+        .checkbox#allow-auto-login
+          %label
+            = f.check_box :allow_auto_login, opts
+            %strong Allow auto-login.
+          %p.help-block
+            Allows <strong>#{root_url}#{@user.username || 'username'}</strong> to automatically login user in. NOTE: This compromises security, and makes site vulnerable to a brute force 'rainbow' attack. However, it is a simple and pretty url that allows a user to access the site — use only in a time limited manner.
     .row
       .col-md-12
         .form-group.text-right
