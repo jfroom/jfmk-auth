@@ -43,6 +43,8 @@ class Admin::UsersTest < AcceptanceTest
     assert @users_page.has_breadcrumb?(
         [{label: 'Admin', link: '/admin'}, {label: 'Manage Users', link: '/admin/users'}, {label: 'New User'}]
     )
+    # verify proper url in help block
+    @users_page.has_help_block_content?(:allow_auto_login, root_path + "username")
 
     # Cancel button goes back to users index
     @users_page.click_cancel
@@ -105,6 +107,7 @@ class Admin::UsersTest < AcceptanceTest
     assert @users_page.has_field?(:password, '', true)
     assert @users_page.has_field?(:name, my_user[:name], true)
     assert @users_page.has_no_checked_field?(:login_locked, true)
+    assert @users_page.has_no_checked_field?(:allow_auto_login, true)
     assert @users_page.has_no_save_btn?
     @users_page.click_back_to_users
     assert_current_path admin_users_path
@@ -149,6 +152,19 @@ class Admin::UsersTest < AcceptanceTest
     # Visit manage users page
     @users_page.click_btn_link 'Manage Users'
     assert_current_path admin_users_path
+
+    # Verify can set allow_auto_login
+    client_auto_login_user = User.find_by_username('clientautologin')
+    @users_page.click_user_action(client_auto_login_user.id, :edit)
+    # verify proper url in help block
+    @users_page.has_help_block_content?(:allow_auto_login, root_path + client_auto_login_user.username)
+    @users_page.uncheck :allow_auto_login
+    @users_page.click_save
+    assert_current_path admin_users_path # Manage users page finishes loading
+    client_auto_login_user = User.find_by_username('clientautologin')
+    assert_not client_auto_login_user.allow_auto_login
+    assert @users_page.has_users_count?(User.count)
+    assert @users_page.has_user_row_attributes?(client_auto_login_user, User.count - 1)
 
     # Verify can lock user
     @users_page.click_user_action(my_user_id, :edit)

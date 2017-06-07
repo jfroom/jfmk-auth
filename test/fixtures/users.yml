@@ -30,3 +30,12 @@ client_locked:
   login_locked: true
   name: Locked
   created_at: <%= stamp %>
+
+client_auto_login:
+  username: clientautologin
+  password_digest: <%= BCrypt::Password.create('Secret1') %>
+  login_attempts: 0
+  login_locked: false
+  allow_auto_login: true
+  name: AutoLogin
+  created_at: <%= stamp %>

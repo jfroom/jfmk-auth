@@ -28,6 +28,10 @@ class SessionsPage < Page::Base
     page.has_css?('.alert', count: 1, text: 'You have been logged out.')
   end
 
+  def has_invalid_username_alert?
+    page.has_css?('.alert', count: 1, text: 'Invalid username.')
+  end
+
   def has_alert_count?(count)
     if count == 0
       page.has_no_css?('.alert')

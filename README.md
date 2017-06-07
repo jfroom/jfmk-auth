@@ -8,6 +8,7 @@ Rails personal project with user management & authentication to proxy serve a pr
 - Docker Compose for development & test; Travis for CI/CD; [Heroku Pipelines](https://devcenter.heroku.com/articles/pipelines) for production
 - 'Simple' [`has_secure_password`](http://api.rubyonrails.org/classes/ActiveModel/SecurePassword/ClassMethods.html) Rails API for authentication & cookie sessions. User is locked out after X failed attempts.
 - Authenticated users are served single-page app with a proxied index page, and expiring pre-signed URLs for sensitive S3 hosted content are parsed/injected. Demo content is instance of [`jfroom/portfolio-web`](//github.com/jfroom/portfolio-web).
+- 'Auto-login' feature can be enabled for a user, which creates a simple and aesthetic url: https://example.com/username. Be aware that using this lowers security threshold. Can implement [`has_secure_token`](http://api.rubyonrails.org/classes/ActiveRecord/SecureToken/ClassMethods.html) in future if this becomes a concern.
 - Tests with MiniTest for models & integration, and Capybara Selenium acceptance tests running in a docker service with Chrome standalone.
 - VNC locally into the Selenium session to interact and debug.
 - Let's Encrypt SSL certificates auto bound to the custom Heroku domain with [`letsencrypt-rails-heroku`](https://github.com/pixielabs/letsencrypt-rails-heroku).
