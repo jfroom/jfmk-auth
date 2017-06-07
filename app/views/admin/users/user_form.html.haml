@@ -44,7 +44,10 @@
             = f.check_box :allow_auto_login, opts
             %strong Allow auto-login.
           %p.help-block
-            Allows <strong>#{root_url}#{@user.username || 'username'}</strong> to automatically login user in. NOTE: This compromises security, and makes site vulnerable to a brute force 'rainbow' attack. However, it is a simple and pretty url that allows a user to access the site — use only in a time limited manner.
+            Allows <strong>#{root_url}#{@user.username || 'username'}</strong> to automatically login user in.
+            NOTE: This compromises security, and makes site vulnerable to a brute force 'rainbow' attack.
+            However, it is a simple and pretty url that allows a user to access the site —
+            use only in a time limited manner.
     .row
       .col-md-12
         .form-group.text-right

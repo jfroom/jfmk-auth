@@ -7,7 +7,7 @@ class AdminMailer < ApplicationMailer
     @url = url
     @remote_ip = remote_ip
     @user_agent = user_agent
-    subject = "[#{ENV.fetch('APP_NAME'){ 'APP_NAME' }.upcase}::#{Rails.env}] " \
+    subject = "[#{ENV.fetch('APP_NAME').upcase}::#{Rails.env}] " \
               "User Activity: #{activity} for @#{@username}"
     mail subject: subject
   end

@@ -1,5 +1,5 @@
 class SessionsController < ApplicationController
-  before_action :check_logged_in, only: [:index, :login, :auto_login]
+  before_action :check_logged_in, only: %i(:index, :login, :auto_login)
   skip_before_action :login_required
 
   def login
@@ -53,15 +53,14 @@ class SessionsController < ApplicationController
     session[:user_id] = user.id
 
     # Email notify admin of a user login
-    unless user.admin? || ENV['IS_DEMO_MODE'] == '1'
-      notify_login(user.username, is_auto_login)
-    end
+    return if user.admin? || ENV['IS_DEMO_MODE'] == '1'
+    notify_login user.username, is_auto_login
   end
 
   def notify_login(username, is_auto_login)
     AdminMailer.activity_email(username, is_auto_login, Time.zone.now.to_s,
                                request.host, request.url, request.remote_ip, request.user_agent
-                               ).deliver_later
+                              ).deliver_later
   # Log any errors silently so user can still login
   rescue Net::SMTPAuthenticationError, Net::SMTPServerBusy, Net::SMTPSyntaxError, Net::SMTPFatalError,
          Net::SMTPUnknownError => e

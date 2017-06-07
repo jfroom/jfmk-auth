@@ -6,7 +6,7 @@ def test_content(email, username, is_auto_login = false)
   # Test the body of the sent email contains what we expect it to
   assert_equal [ENV['ACTION_MAILER_DEFAULT_FROM']], email.from
   assert_equal [ENV['ACTION_MAILER_DEFAULT_TO']], email.to
-  subject = "[#{ENV.fetch('APP_NAME'){ 'APP_NAME' }.upcase}::#{Rails.env}] "\
+  subject = "[#{ENV.fetch('APP_NAME').upcase}::#{Rails.env}] "\
             "User Activity: #{activity} for @#{username}"
   assert_equal subject, email.subject
   assert_equal read_fixture('activity_email.html').join, email.html_part.body.to_s
@@ -20,7 +20,7 @@ class AdminMailerTest < ActionMailer::TestCase
     request = ActionDispatch::TestRequest.create({})
     username = 'client'
     args = username, false, now, request.host, request.url, request.remote_ip, request.user_agent
-    email = AdminMailer.activity_email *args
+    email = AdminMailer.activity_email(*args)
 
     # Test delivery now
     assert_emails 1 do
@@ -31,7 +31,7 @@ class AdminMailerTest < ActionMailer::TestCase
 
     # Test deliver_later
     ActiveJob::Base.queue_adapter = :test
-    email = AdminMailer.activity_email *args
+    email = AdminMailer.activity_email(*args)
     assert_enqueued_emails 1 do
       email.deliver_later
     end
@@ -45,7 +45,7 @@ class AdminMailerTest < ActionMailer::TestCase
     request = ActionDispatch::TestRequest.create({})
     username = 'client'
     args = username, true, now, request.host, request.url, request.remote_ip, request.user_agent
-    email = AdminMailer.activity_email *args
+    email = AdminMailer.activity_email(*args)
 
     # Test delivery now
     assert_emails 1 do
