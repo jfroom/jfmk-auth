@@ -1,7 +1,7 @@
 require "acceptance/page_obs/admin/admin_page"
 
 class Admin::UsersPage < Admin::AdminPage
-  ATTRIBUTES = %i(username name admin allow_auto_login login_locked login_attempts).freeze
+  ATTRIBUTES = %i[username name admin allow_auto_login login_locked login_attempts].freeze
 
   def has_user_table_header?
     # Verify number of TH vs. attributes
@@ -37,9 +37,9 @@ class Admin::UsersPage < Admin::AdminPage
 
       # Verify actions for each column
       actions_css = "#{css}:nth-of-type(#{ATTRIBUTES.size + 1}) a.btn"
-      %w(View Edit Delete).each_with_index do |action, aIdx|
-        unless page.has_css?("#{actions_css}:nth-of-type(#{aIdx + 1})", text: action)
-          raise "Expected to find action '#{action}' in button #{aIdx}, but did not."
+      %w(view edit delete).each_with_index do |action, aIdx|
+        unless page.has_css?("#{actions_css}:nth-of-type(#{aIdx + 1})", text: action.capitalize)
+          raise "Expected to find action '#{action.capitalize}' in button #{aIdx}, but did not."
         end
       end
     end
