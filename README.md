@@ -2,6 +2,8 @@
 
 Rails personal project with user management & authentication to proxy serve a private, single-page app.
 
+See blog post "[JFMK-Auth Walkthrough](https://medium.com/@jfroom/jfmk-auth-walkthrough-10264b45b0f1)' for commentary on the technolgoies.
+
 ## Technologies
 
 - Rails 5, Postgres, Selenium, AWS S3, HAML, CoffeeScript, Bootstrap, SCSS 
